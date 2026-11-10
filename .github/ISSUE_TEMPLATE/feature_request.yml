@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an improvement or a new scenario
+labels: ["enhancement"]
+body:
+  - type: input
+    id: scope
+    attributes:
+      label: Branch or module
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem would it solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would you like to see?
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I removed secrets and real values from this request
+          required: true
