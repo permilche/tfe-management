@@ -1,0 +1,55 @@
+# This policy uses the tfconfig/v2 import to prevent local-exec provisioners from being used on null_resource resources
+#
+# Rationale: local-exec runs commands on the machine executing Terraform (e.g. a TFE/TFC agent). If abused, it can expose
+# agent environment variables/credentials (like dynamic or static credentials used in the workspace), allowing privilege
+# escalation beyond the workspace's intended access scope
+# If you want to block local-exec provisioners on all resources, just remove the is_null_resource check and the violations
+# collection will apply to all resources (local-exec can also be used in other resources so might be better to prevent the
+# local-exec provisioner completely by removing the is_null_resource check as mentioned above)
+
+import "tfconfig/v2" as tfconfig
+import "strings"
+
+# returns true if the given resource is a null_resource
+is_null_resource = func(resource) {
+  return resource.type is "null_resource"
+}
+
+# collect violations: null_resource instances that declare a local-exec provisioner
+violations = {}
+for tfconfig.resources as address, r {
+  if is_null_resource(r) {
+    for r.provisioners else [] as p {
+      if p.type is "local-exec" {
+        violations[address] = r
+        print("Resource", address, "has a local-exec provisioner, which is forbidden on null_resource")
+      }
+    }
+  }
+}
+
+# main rule
+main = rule {
+  length(violations) is 0
+}
+
+# version blocking every local-exec provisioners, not only on null_resources
+
+# import "tfconfig/v2" as tfconfig
+# import "strings"
+
+# # collect violations: null_resource instances that declare a local-exec provisioner
+# violations = {}
+# for tfconfig.resources as address, r {
+#   for r.provisioners else [] as p {
+#     if p.type is "local-exec" {
+#       violations[address] = r
+#       print("Resource", address, "has a local-exec provisioner, which is forbidden on all resources")
+#     }
+#   }
+# }
+
+# # main rule
+# main = rule {
+#   length(violations) is 0
+# }

@@ -1,0 +1,6 @@
+.bob/
+.terraform*
+*tfvars
+*tfstate.backup
+*tfstate
+certs/azure-ad-certificate.cer

@@ -1,0 +1,2 @@
+# TFE Bootstrap Configuration
+# This file is included but is meant to run in TFE/HCPTF with the variables assigned to the manaement workspace. That is why I decided to include it empty.

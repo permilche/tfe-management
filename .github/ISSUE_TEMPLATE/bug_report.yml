@@ -1,0 +1,43 @@
+name: Bug report
+description: Something doesn't work as documented
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please **remove secrets and real values** (tokens, tenant or subscription IDs, organization names) before posting.
+  - type: input
+    id: scope
+    attributes:
+      label: Branch or module
+      placeholder: e.g. main, multi-provider-azure-dynamic-credentials, or the module name
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Terraform, providers (tfe, azurerm, azuread) and HCP Terraform / TFE
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmation
+      options:
+        - label: I removed secrets and real values from this report
+          required: true
